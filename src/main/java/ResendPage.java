@@ -18,15 +18,13 @@ public class ResendPage extends PageObject {
     @FindBy(id = "twitter")
     private WebElement twitterButton;
 
-    private WebElement twitter_path = driver.findElement(By.cssSelector("li.wg-footer__social-item:nth-child(1) > a:nth-child(1) > svg:nth-child(1) > use:nth-child(1)"));
-
-    @FindBy(css= "//a[@href='']")
+    @FindBy(xpath= "/html/body/div[1]/div/div[3]/div/div[1]/div/ul/li[1]/a") // wg-footer__social-link   /html/body/div[1]/div/div[3]/div/div[1]/div/ul/li[1]/a
     private WebElement twitter_link;
 
     @FindBy(className = "survey-form") ///html/body/div[1]/main/div/div/div[2]/div/div[2]/div/form
     private WebElement surveyForm;
 
-    @FindBy(className = "submit.wg-btn.wg-btn--navy.js-survey-submit")
+    @FindBy(xpath = "/html/body/div[1]/main/div/div/div[2]/div/div[2]/div/form/button")
     private WebElement submitSurveyButton;
 
     //get list of survey buttons
@@ -39,7 +37,7 @@ public class ResendPage extends PageObject {
 
     @Step
     String getTwitterLink(){
-        return twitter_link.getText();
+        return twitter_link.getAttribute("href");
     }
 
     //check if survey form and resend button is ready
@@ -71,43 +69,43 @@ public class ResendPage extends PageObject {
             Random r1 = new Random();
             int i1 = r1.ints(0, 2).findFirst().getAsInt();
             elements.get(i1).click();
-
-            int i2 = r1.ints(2, 7).findFirst().getAsInt();
+            Random r2 = new Random();
+            int i2 = r2.ints(2, 7).findFirst().getAsInt();
             elements.get(i2).click();
+            Random r3 = new Random();
 
-            int i3 = r1.ints(7, 10).findFirst().getAsInt();
+            int i3 = r3.ints(7, 10).findFirst().getAsInt();
             if(i3 != 9) {
-                elements.get(i2).click();
+                elements.get(i3).click();
             }
             else {
-                elements.get(i2).click();
+                elements.get(i3).click();
                 WebElement otherComments = surveyForm.findElement(By.xpath("/html/body/div[1]/main/div/div/div[2]/div/div[2]/div/form/div[3]/label[3]/button/span/input"));
                 otherComments.sendKeys(GetStartedPage.getRandomString(r1, 10));
             }
-        }
 
-        (new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d){
-                return d.findElement(By.className("submit.wg-btn.wg-btn--navy.js-survey-submit")).isEnabled();
-            }
-        });
-
-        if(submitSurveyButton.isEnabled()) {
+            //wait until submit button can be clicked
+            (new WebDriverWait(driver, 15)).until(new ExpectedCondition<Boolean>() {
+                public Boolean apply(WebDriver d){
+                    return d.findElement(By.xpath("/html/body/div[1]/main/div/div/div[2]/div/div[2]/div/form/button")).isEnabled();
+                }
+            });
             submitSurveyButton.click();
         }
+
     }
 
     boolean resendButtonIsClicked(){
         //if button was is clicked, it become hidden
         return !resendButton.isDisplayed();
     }
-
+/*
     public String getTwPath() {
-        return twitter_path.toString();
+        return twitter_path.getAttribute("xlink:href");
     }
-
+*/
     boolean surveyFormIsSubmitted() {
-        //if button was submitted, it become hidden
+        //if form was submitted, it become hidden
         return !surveyForm.isDisplayed();
     }
 
