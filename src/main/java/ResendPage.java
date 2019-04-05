@@ -58,7 +58,7 @@ public class ResendPage extends PageObject {
      *   For the first question we can only choose one option (buttons with indexes 0 and 1).
      *   Method get random number in range between 0 and 1 and click it.
      *   For the second question we can choose 5 options (buttons with indexes 2 - 7 inclusive).
-     *   Method do the same thing that it did for the first question
+     *   The method does the same thing that it did for the first question
      *   For the third question we choose between 3 button like in the previous steps, but if we select
      *   the last one, we need to enter text to submit the form
      *
